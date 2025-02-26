@@ -67,7 +67,7 @@ const CapturePage = () => {
 
   return (
     isLoading ? <Loading /> : (
-      <main className="flex flex-col grow w-full max-w-3xl mx-auto px-4 py-6">
+      <main className="flex flex-col grow w-full max-w-4xl mx-auto px-4 py-6">
         <div className="flex flex-col grow relative bg-white rounded shadow px-3 py-6 sm:px-6 sm:py-12">
           {showCamera ? (
             <CameraView
