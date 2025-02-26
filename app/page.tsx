@@ -1,5 +1,9 @@
+import CapturePage from "@/features/CapturePage"
+
 export default function Home() {
   return (
-    <div></div>
+    <div className="flex flex-col grow">
+      <CapturePage />
+    </div>
   )
 }
