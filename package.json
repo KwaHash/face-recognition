@@ -11,12 +11,17 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mediapipe/face_detection": "^0.4.1646425229",
     "@mui/material": "^6.4.5",
+    "@tensorflow-models/face-detection": "^1.0.3",
     "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.22.0",
+    "@tensorflow/tfjs-core": "^4.22.0",
     "lucide-react": "^0.475.0",
     "next": "14.2.8",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-loading-indicators": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
