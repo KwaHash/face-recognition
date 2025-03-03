@@ -1,9 +1,9 @@
-import CapturePage from "@/features/CapturePage"
+import ListPage from "@/features/ListPage"
 
 export default function Home() {
   return (
-    <div className="flex flex-col grow bg-gray-800 bg-opacity-80">
-      <CapturePage />
-    </div>
+    <main className="flex flex-col flex-grow items-center justify-between mt-20">
+      <ListPage />
+    </main>
   )
 }
