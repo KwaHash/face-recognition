@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PhotoType, FaceInfo, PhotoMode } from "@/types/capture.d";
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Check, Dot } from "lucide-react";
+import { useState } from "react";
 
 const VideoOverlay: React.FC<{
   mode: PhotoMode;
@@ -55,11 +56,11 @@ const VideoOverlay: React.FC<{
   return (
     <>
       {mode === PhotoMode.After && beforePhoto && !tempPhoto && (
-        <div className="absolute pointer-events-none">
+        <div className="absolute left-0 right-0 top-[-32px] flex flex-col items-center justify-center">
           <Image
             src={beforePhoto.imageUrl}
             alt="Before overlay"
-            className="w-full h-full mx-auto mt-8 rounded sm:rounded-lg opacity-30 scale-x-[-1]"
+            className="w-full h-full mx-auto mt-8 rounded sm:rounded-lg opacity-30"
             width={640}
             height={480}
           />
@@ -73,12 +74,6 @@ const VideoOverlay: React.FC<{
           カメラを準備中
         </p>
       )}
-
-      {/* {feedback && !tempPhoto && (
-        <div className="absolute w-11/12 sm:w-3/5 text-sm text-center bottom-4 left-1/2 font-bold transform -translate-x-1/2 bg-yellow-500 text-white px-4 py-2 rounded-full">
-          {feedback}
-        </div>
-      )} */}
     </>
   );
 };
