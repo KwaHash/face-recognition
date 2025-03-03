@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: face-recognition-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      # Add any environment variables your app needs here
+    restart: always
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local

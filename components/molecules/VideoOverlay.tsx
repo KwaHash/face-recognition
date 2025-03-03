@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { PhotoType, FaceInfo, PhotoMode } from "@/types/capture.d";
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Check, Dot } from "lucide-react";
-import { useState } from "react";
 
 const VideoOverlay: React.FC<{
   mode: PhotoMode;
