@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { PhotoType, PhotoMode } from '@/types/capture.d';
 import { Camera, SunMedium, AlertCircle } from 'lucide-react';
 
+import { saveImages } from '@/actions/save-image';
 interface PhotoGalleryProps {
   beforePhoto: PhotoType | null;
   afterPhoto: PhotoType | null;
@@ -18,6 +20,8 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   setShowCamera,
   startCamera,
 }) => {
+  const router = useRouter();
+  const [saveError, setSaveError] = useState<string | null>(null);
   const onBeforeClick = () => {
     setMode(PhotoMode.Before);
     setShowCamera(true);
@@ -30,8 +34,41 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
     startCamera();
   }
 
+  const onSaveHandle = async () => {
+    if (!beforePhoto || !afterPhoto) return;
+
+    setSaveError(null);
+
+    const timestamp = Date.now();
+    const beforeFileName = `${timestamp}_before.jpg`;
+    const afterFileName = `${timestamp}_after.jpg`;
+
+    const result = await saveImages(
+      beforePhoto.imageUrl,
+      afterPhoto.imageUrl,
+      beforeFileName,
+      afterFileName,
+      Number(beforePhoto.brightness.toFixed(1)),
+      Number(afterPhoto.brightness.toFixed(1)),
+    );
+
+    if (result.success) {
+      router.push('/');
+      console.log('Images saved successfully:', result);
+    } else {
+      console.error('Failed to save images:', result.error);
+      setSaveError('保存中にエラーが発生しました');
+    }
+  }
+
   return (
     <div className="space-y-6">
+      {saveError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 w-full">
+          {saveError}
+        </div>
+      )}
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <h3 className="font-semibold text-xl">Before写真</h3>
@@ -40,7 +77,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
               <Image
                 src={beforePhoto.imageUrl}
                 alt="Before"
-                className="w-full h-full object-cover rounded-lg scale-x-[-1]"
+                className="w-full h-full object-cover rounded-lg"
                 width={640}
                 height={480}
               />
@@ -66,7 +103,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
               <Image
                 src={afterPhoto.imageUrl}
                 alt="After"
-                className="w-full h-full object-cover rounded-lg scale-x-[-1]"
+                className="w-full h-full object-cover rounded-lg"
                 width={640}
                 height={480}
               />
@@ -104,14 +141,14 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         </div>
       )}
 
-      <div className="flex justify-center space-x-4">
+      <div className="flex flex-wrap justify-center gap-3">
         {beforePhoto && (
           <button
             onClick={() => {
               setMode(PhotoMode.Before);
               setShowCamera(true);
             }}
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            className="px-4 py-2 bg-gray-500 text-white rounded-sm hover:bg-gray-600 min-w-32"
           >
             Before再撮影
           </button>
@@ -122,9 +159,18 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
               setMode(PhotoMode.After);
               setShowCamera(true);
             }}
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            className="px-4 py-2 bg-gray-500 text-white rounded-sm hover:bg-gray-600 min-w-32"
           >
             After再撮影
+          </button>
+        )}
+
+        {beforePhoto && afterPhoto && (
+          <button
+            onClick={onSaveHandle}
+            className="px-4 py-2 bg-gray-500 text-white rounded-sm hover:bg-gray-600 min-w-32"
+          >
+            保存する
           </button>
         )}
       </div>

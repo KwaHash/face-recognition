@@ -35,7 +35,13 @@ const CapturePage = () => {
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+
+    // Flip horizontally by scaling and translating
+    context.scale(-1, 1);
+    context.translate(-canvas.width, 0);
     context.drawImage(video, 0, 0);
+    // Reset transform
+    context.setTransform(1, 0, 0, 1, 0, 0);
 
     const brightness = faceInfo?.brightness ?? 0;
     const photo: PhotoType = {
@@ -66,38 +72,40 @@ const CapturePage = () => {
   };
 
   return (
-    isLoading ? <Loading /> : (
-      <main className="flex flex-col grow w-full max-w-4xl mx-auto px-4 py-6">
-        <div className="flex flex-col grow relative bg-white rounded shadow px-3 py-6 sm:px-6 sm:py-12">
-          {showCamera ? (
-            <CameraView
-              mode={mode}
-              beforePhoto={beforePhoto}
-              tempPhoto={tempPhoto}
-              videoRef={videoRef}
-              canvasRef={canvasRef}
-              isVideoReady={isVideoReady}
-              faceInfo={faceInfo}
-              onCancel={() => {
-                setShowCamera(false);
-                stopCamera();
-              }}
-              onCapture={capturePhoto}
-              onSave={savePhoto}
-              cancelCapture={cancelCapture}
-            />
-          ) : (
-            <PhotoGallery
-              beforePhoto={beforePhoto}
-              afterPhoto={afterPhoto}
-              setMode={setMode}
-              setShowCamera={setShowCamera}
-              startCamera={startCamera}
-            />
-          )}
-        </div>
-      </main>
-    )
+    <div className="flex flex-col flex-grow py-2 sm:py-0 sm:px-10 w-full">
+      {isLoading ? <Loading /> : (
+        <main className="flex flex-col grow w-full max-w-4xl mx-auto px-4 py-6">
+          <div className="flex flex-col grow relative bg-white rounded shadow px-3 py-6 sm:px-6 sm:py-12">
+            {showCamera ? (
+              <CameraView
+                mode={mode}
+                beforePhoto={beforePhoto}
+                tempPhoto={tempPhoto}
+                videoRef={videoRef}
+                canvasRef={canvasRef}
+                isVideoReady={isVideoReady}
+                faceInfo={faceInfo}
+                onCancel={() => {
+                  setShowCamera(false);
+                  stopCamera();
+                }}
+                onCapture={capturePhoto}
+                onSave={savePhoto}
+                cancelCapture={cancelCapture}
+              />
+            ) : (
+              <PhotoGallery
+                beforePhoto={beforePhoto}
+                afterPhoto={afterPhoto}
+                setMode={setMode}
+                setShowCamera={setShowCamera}
+                startCamera={startCamera}
+              />
+            )}
+          </div>
+        </main>
+      )}
+    </div>
   );
 };
 

@@ -78,7 +78,7 @@ export const CameraView: React.FC<CameraViewProps> = ({
           <Image
             src={tempPhoto.imageUrl}
             alt="Captured photo"
-            className="absolute inset-0 w-full h-full object-contain rounded sm:rounded-lg bg-black bg-opacity-80 scale-x-[-1] mt-7"
+            className="absolute inset-0 w-full h-full object-contain rounded sm:rounded-lg bg-black bg-opacity-80 mt-7"
             width={640}
             height={480}
           />
