@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-// import Header from "@/components/molecules/Header";
-
+import NavBar from "@/components/organisms/NavBar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,11 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="jp">
-      <body>
-        <div className="flex flex-col min-h-screen">
-          {/* <Header /> */}
-          {children}
-        </div>
+      <body className="flex flex-col min-h-screen bg-m-light-yellow">
+        <NavBar />
+        {children}
       </body>
     </html>
   );

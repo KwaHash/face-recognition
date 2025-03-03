@@ -1,9 +1,9 @@
-import ListPage from "@/features/ListPage"
+import CapturePage from "@/features/CapturePage"
 
-export default function Home() {
+export default function Register() {
   return (
     <main className="flex flex-col flex-grow items-center justify-between mt-20">
-      <ListPage />
+      <CapturePage />
     </main>
   )
 }
