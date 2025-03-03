@@ -12,6 +12,10 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "m-green": "#50C300",
+        "m-indigo": "#4f46e5",
+        "m-gray": "#374151",
+        "m-light-yellow": "#F7F6EF",
       },
     },
   },
