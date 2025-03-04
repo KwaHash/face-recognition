@@ -1,25 +1,36 @@
 import { MongoClient } from "mongodb";
 
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/";
-let client: MongoClient;
+const uri = process.env.MONGODB_URI!;
+let client: MongoClient | null = null;
+let clientPromise: Promise<MongoClient> | null = null;
 
 export async function connectToDatabase() {
-  if (!client) {
-    client = new MongoClient(uri);
-    await client.connect();
+  try {
+    if (!clientPromise) {
+      client = new MongoClient(uri);
+      clientPromise = client.connect();
+    }
+
+    const connectedClient = await clientPromise;
+    console.log("Connected to MongoDB");
+    return { client: connectedClient };
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    throw new Error("Database connection failed");
   }
-  const db = client.db("face-recognition");
-  return { db, client };
 }
 
 // Cleanup function to close the MongoDB connection
 export async function closeDatabaseConnection() {
   if (client) {
     await client.close();
-    client = null as unknown as MongoClient;
+    client = null;
+    clientPromise = null;
+    console.log("MongoDB connection closed.");
   }
 }
 
+// Handle process termination to close the connection
 process.on("SIGINT", async () => {
   await closeDatabaseConnection();
   process.exit(0);

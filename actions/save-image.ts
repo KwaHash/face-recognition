@@ -38,7 +38,8 @@ export async function saveImages(
     await writeFile(path.join(publicDir, afterPath), afterBuffer);
 
     // Save to database
-    const { db } = await connectToDatabase();
+    const { client } = await connectToDatabase();
+    const db = client.db("face-recognition");
 
     await db.collection("photos").insertOne({
       beforePath,
