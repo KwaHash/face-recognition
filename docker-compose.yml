@@ -1,32 +1,46 @@
 version: "3.9"
 
 services:
-  nextjs-app:
+  face-recognition-app:
     build:
       context: .
       dockerfile: Dockerfile
+      target: production
     container_name: face-recognition-app
     ports:
       - "3000:3000"
     depends_on:
       - mongo
     environment:
-      - NODE_ENV=production
-      # Add any environment variables your app needs here
+      - MONGODB_URI=mongodb://mongo:27017/face-recognition
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     restart: always
+    networks:
+      - face-recognition-network
 
   mongo:
     image: mongo:latest
     container_name: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
     ports:
       - "27017:27017"
-    restart: always
     volumes:
       - mongo-data:/data/db
+    networks:
+      - face-recognition-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   mongo-data:
     driver: local
+
+networks:
+  face-recognition-network:
+    driver: bridge
